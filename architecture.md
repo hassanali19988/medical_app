@@ -33,7 +33,7 @@ Pages
             - height
             = connect to apple health or android health
         - user clinics history
-            - راجيتة
+            - راجيتة (recipe)
 
 
 

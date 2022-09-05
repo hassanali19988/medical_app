@@ -12,6 +12,6 @@ class SubText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,textAlign:TextAlign.center ,style: GoogleFonts.vazirmatn(fontSize: size,fontWeight: FontWeight.w400,color: Colors.blue),);
+    return Text(text,textAlign:TextAlign.center ,style: GoogleFonts.vazirmatn(fontSize: size,fontWeight: FontWeight.w400,color: Color(0xff929BA1)),);
   }
 }

@@ -4,6 +4,7 @@ import 'package:medical_app/OnBoarding/start_button.dart';
 import '../models/onboarding_models/onboarding_details.dart';
 import '../reuseable_widgets/texts_types/headline_text.dart';
 import '../reuseable_widgets/texts_types/sub_text.dart';
+import 'circle_indicators.dart';
 import 'indicator_section.dart';
 
 class OnBoardingMain extends StatefulWidget {
@@ -55,9 +56,21 @@ class _OnBoardingMainState extends State<OnBoardingMain> {
           );
         },
       ),
-      bottomSheet: isLastPage
-          ? const StartButton()
-          :IndicatorSection(controller: _pageViewController) ,
+      bottomSheet: Container(
+        color: const Color(0xFFf6f6f6),
+        height: 120,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: CircleIndicators(controller: _pageViewController,),
+            ),
+            isLastPage
+                ? StartButton(controller: _pageViewController)
+                :IndicatorSection(controller: _pageViewController),
+          ],
+        ),
+      ) ,
     );
   }
 

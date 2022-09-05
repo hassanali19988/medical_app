@@ -15,14 +15,9 @@ class CircleIndicators extends StatelessWidget {
     return SmoothPageIndicator(
                       controller: controller,
                       count: Details.animations.length,
-                      onDotClicked: (index) {
-                        controller.animateToPage(
-                          index,
-                          duration: const Duration(milliseconds: 350),
-                          curve: Curves.easeIn,
-                        );
-                      },
-                      effect: const WormEffect(
+                      
+                      effect: const ExpandingDotsEffect(
+                          dotColor: Color(0xffD9D9D9),
                           activeDotColor: Colors.blue,
                           dotWidth: 12,
                           dotHeight: 12),

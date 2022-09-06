@@ -17,29 +17,8 @@ class register extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        RegisterEmail(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            width: double.maxFinite,
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50), color: Colors.blue),
-            child: TextButton(
-              onPressed: () {
-                currentRegisterPage.value = 1;
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPassword(),));
-                // print(currentRegisterPage);
-              },
-              child: const HeadLineText(
-                text: 'اكمال التسجيل',
-                lineHeight: 1,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-          ),
-        )
+        
+        
       ],
     );
   }

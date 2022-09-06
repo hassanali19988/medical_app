@@ -5,15 +5,17 @@ import 'package:get/get.dart';
 import '../Appointments/appointments_main.dart';
 import '../Home/home_main.dart';
 import '../User_Page/Register/main_register.dart';
+import '../User_Page/Register/registerEmail.dart';
 
 class MainView extends StatelessWidget {
 
-  final List pages = [Home(),Appointments(),register()];
+  final List pages = [Home(),Appointments(),RegisterEmail()];
   Rx<int> currentIndex = Rx<int>(0);
   PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: PageView.builder(
         controller: pageController,
         onPageChanged: (index) {

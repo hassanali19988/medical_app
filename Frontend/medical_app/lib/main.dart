@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home/home_main.dart';
+import 'Main_View/main_view.dart';
 import 'OnBoarding/onboarding_main.dart';
 
 void main() async {
@@ -19,12 +20,14 @@ class MyApp extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Material App',
-      initialRoute: showHome ?'/home':'/',
+      initialRoute: showHome ?'/main':'/',
       routes: {
         '/': (context) => OnBoardingMain(),
-        '/home': (context) => Home()
+        '/main': (context) => MainView()
       },
     );
   }

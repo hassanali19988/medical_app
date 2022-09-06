@@ -34,7 +34,7 @@ class StartButton extends StatelessWidget {
                       onPressed: () async{
                         final prefs = await SharedPreferences.getInstance();
                         prefs.setBool('showHome', true);
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushReplacementNamed(context, '/main');
                       },
                       child: Text("ابدء",style: GoogleFonts.vazirmatn(fontSize: 30,color: Colors.white),)),
           ),

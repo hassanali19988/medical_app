@@ -1,17 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Appointments/appointments_main.dart';
 import '../Home/home_main.dart';
-import '../User_Page/Register/main_register.dart';
+import '../User_Page/Login/login_main.dart';
 import '../User_Page/Register/registerEmail.dart';
+import '../User_Page/Register/registerd_animation.dart';
+import '../User_Page/loged_user_page/user_page.dart';
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
 
-  final List pages = [Home(),Appointments(),RegisterEmail()];
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+   final List pages = [Home(),Appointments()];
+  Future<Null> getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.getString('userEmail')==null?pages.insert(2, RegisterEmail()):pages.insert(2, UserPage());
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserData();
+  }
+ 
+
   Rx<int> currentIndex = Rx<int>(0);
+
   PageController pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +46,7 @@ class MainView extends StatelessWidget {
         itemCount: 3,
         itemBuilder: (context, index) {
           return pages[index];
+          // return Login();
         },
       ),
       bottomNavigationBar: Obx(() {

@@ -46,7 +46,7 @@ class _OnBoardingMainState extends State<OnBoardingMain> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Details.animations[index],
+                    SizedBox(height: 300,width: 400,child: Details.animations[index],),
                     HeadLineText(text: Details.headlines[index]),
                     SubText(text: Details.subTexts[index])
                   ],

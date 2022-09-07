@@ -3,14 +3,20 @@ import 'package:lottie/lottie.dart';
 
 import '../../Main_View/main_view.dart';
 
-class RegisterdAnimation extends StatefulWidget {
-  const RegisterdAnimation({Key? key}) : super(key: key);
+class HoldOnAnimation extends StatefulWidget {
+  final Function() whenItEnds;
+  final String animationDirectory;
+  const HoldOnAnimation({
+    Key? key,
+    required this.whenItEnds,
+    required this.animationDirectory,
+  }) : super(key: key);
 
   @override
-  State<RegisterdAnimation> createState() => _RegisterdAnimationState();
+  State<HoldOnAnimation> createState() => _RegisterdAnimationState();
 }
 
-class _RegisterdAnimationState extends State<RegisterdAnimation>
+class _RegisterdAnimationState extends State<HoldOnAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController _lottieAnimationController;
 
@@ -24,11 +30,7 @@ class _RegisterdAnimationState extends State<RegisterdAnimation>
 
     _lottieAnimationController.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MainView(),
-            ));
+        widget.whenItEnds();
       }
     });
   }
@@ -44,10 +46,9 @@ class _RegisterdAnimationState extends State<RegisterdAnimation>
     return Scaffold(
       body: Center(
         child: LottieBuilder.asset(
-          'Assets/Lottie json/done.json',
+          widget.animationDirectory,
           repeat: false,
           onLoaded: (composition) {
-            // Future.delayed(Duration(seconds: 4));
             _lottieAnimationController.duration = composition.duration;
             _lottieAnimationController.forward();
           },

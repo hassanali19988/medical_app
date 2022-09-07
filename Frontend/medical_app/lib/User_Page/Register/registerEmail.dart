@@ -3,19 +3,50 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medical_app/User_Page/Register/registerPassword.dart';
+import 'package:medical_app/User_Page/Register/validations.dart';
+import 'package:medical_app/reuseable_widgets/main_button.dart';
 
 import '../../reuseable_widgets/texts_types/headline_text.dart';
 import '../Login/login_main.dart';
 import '../textfield/registerTextField.dart';
+import 'validationDetatils.dart';
 
-class RegisterEmail extends StatelessWidget {
-  const RegisterEmail({Key? key}) : super(key: key);
-  static final TextEditingController _firstName = TextEditingController();
-  static final TextEditingController _lastName = TextEditingController();
-  static final TextEditingController _email = TextEditingController();
+class RegisterEmail extends StatefulWidget {
+  RegisterEmail({Key? key}) : super(key: key);
 
   @override
+  State<RegisterEmail> createState() => _RegisterEmailState();
+}
+
+class _RegisterEmailState extends State<RegisterEmail> {
+  @override
   Widget build(BuildContext context) {
+    void navigateToPassword(
+        {required BuildContext context,
+        required String firstName,
+        required String lastName,
+        required String email}) {
+      firstNameValidations();
+      lastNameValidations();
+      emailValidations();
+      if (firstNameValidations() &&
+          lastNameValidations() &&
+          emailValidations()) {
+        firstNameValidation.value = false;
+        lastNameValidation.value = false;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RegisterPassword(
+              firstName: firstName, //_firstName.text
+              lastName: lastName, //_lastName.text
+              email: email, //_email.text
+            ),
+          ),
+        );
+      }
+    }
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -36,7 +67,7 @@ class RegisterEmail extends StatelessWidget {
                     fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
@@ -49,15 +80,19 @@ class RegisterEmail extends StatelessWidget {
                       Expanded(
                           child: RegisterTextField(
                         hintText: 'اسم العائلة',
-                        controller: _lastName,
+                        controller: lastName,
+                        errormsg: lastNameErrorMsg,
+                        validate: lastNameValidation.value,
                       )),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                           child: RegisterTextField(
                         hintText: 'الاسم الاول',
-                        controller: _firstName,
+                        controller: firstName,
+                        validate: firstNameValidation.value,
+                        errormsg: firstNameErrorMsg,
                       )),
                     ],
                   ),
@@ -66,7 +101,9 @@ class RegisterEmail extends StatelessWidget {
                   ),
                   RegisterTextField(
                     hintText: 'الحساب الالكتروني',
-                    controller: _email,
+                    controller: email,
+                    validate: emailValidation.value,
+                    errormsg: emailErrorMsg,
                   ),
                   const SizedBox(
                     height: 10,
@@ -88,47 +125,28 @@ class RegisterEmail extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Login(),
+                                      builder: (context) => const Login(),
                                     ),
                                   );
                                 }),
                         ]),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      width: double.maxFinite,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.blue),
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterPassword(
-                                  firstName: _firstName.text,
-                                  lastName: _lastName.text,
-                                  email: _email.text),
-                            ),
-                          );
-                        },
-                        child: const HeadLineText(
-                          text: 'اكمال التسجيل',
-                          lineHeight: 1,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                  )
+                  MainButton(
+                      onPressed: () {
+                        setState(() {
+                          navigateToPassword(
+                              context: context,
+                              firstName: firstName.text,
+                              lastName: lastName.text,
+                              email: email.text);
+                        });
+                      },
+                      buttonTitle: 'اكمال التسجيل')
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 150,
             )
           ],

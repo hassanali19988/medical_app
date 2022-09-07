@@ -7,7 +7,6 @@ import '../Appointments/appointments_main.dart';
 import '../Home/home_main.dart';
 import '../User_Page/Login/login_main.dart';
 import '../User_Page/Register/registerEmail.dart';
-import '../User_Page/Register/registerd_animation.dart';
 import '../User_Page/loged_user_page/user_page.dart';
 
 class MainView extends StatefulWidget {

@@ -6,13 +6,19 @@ import '../../models/user_model/account_model.dart';
 import '../../reuseable_widgets/texts_types/headline_text.dart';
 import '../textfield/registerTextField.dart';
 import 'loggedin_animation.dart';
-import 'package:medical_app/main.dart';
 
-class Login extends StatelessWidget {
+import 'loginValidationDetails.dart';
+import 'loginValidations.dart';
+import 'package:get/get.dart';
+
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
-  static final TextEditingController email = TextEditingController();
-  static final TextEditingController password = TextEditingController();
 
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +41,19 @@ class Login extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   RegisterTextField(
-                      hintText: 'البريد الالكتروني', controller: email),
-                  SizedBox(height: 10),
-                  RegisterTextField(hintText: 'كلمة السر', controller: password),
+                      hintText: 'البريد الالكتروني',
+                      controller: email,
+                      validate: emailValidation.value,
+                      errormsg: emailErrorMsg),
+                  const SizedBox(height: 10),
+                  RegisterTextField(
+                      hintText: 'كلمة السر',
+                      controller: password,
+                      validate: passwordValidation.value,
+                      errormsg: passwordErrorMsg),
                 ],
               ),
             ),
@@ -53,23 +67,11 @@ class Login extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.blue),
                 child: TextButton(
-                  onPressed: () async {
-                    print('email:${email.text}\npassword:${password.text}');
-
-                    final prefs = await SharedPreferences.getInstance();
-                    prefs.setString('userEmail', email.text);
-                    prefs.setString('userPassword', password.text);
-                    for (UserAccount user in User.users) {
-                      if (email.text == user.email &&
-                          password.text == user.password) {
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoggedinAnimation(),
-                            ));
-                      }
-                    }
+                  onPressed: () {
+                    setState(() {
+                      loginTohome(
+                          context: context, email: email, password: password);
+                    });
                   },
                   child: const HeadLineText(
                     text: 'تسجيل الدخول',
@@ -82,6 +84,37 @@ class Login extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+Future<Null> loginTohome(
+    {required email, required password, required context}) async {
+  // print('email:${email.text}\npassword:${password.text}');
+  final Rx<bool> userFound = Rx<bool>(false);
+print("${emailValidations()} && ${passwordValidations()}");
+  if (emailValidations() && passwordValidations()) {
+    
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('userEmail', email.text);
+    prefs.setString('userPassword', password.text);
+    for (UserAccount user in User.users) {
+      if (email.text == user.email && password.text == user.password) {
+        userFound.value = true;
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoggedinAnimation(),
+            ));
+      }
+    }
+  }
+  if (!userFound.value && emailValidation.value == false && passwordValidation.value == false) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('there is no such user '),
       ),
     );
   }

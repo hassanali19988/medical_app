@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:medical_app/User_Page/Register/validations.dart';
 
-
 import '../../Main_View/main_view.dart';
 import '../../models/user_model/account_model.dart';
 import '../../reuseable_widgets/back_Icon.dart';
@@ -15,7 +14,7 @@ import '../textfield/registerTextField.dart';
 import 'validationDetatils.dart';
 
 class RegisterPassword extends StatefulWidget {
-  final String firstName, lastName, email;
+  final TextEditingController firstName, lastName, email;
   const RegisterPassword({
     Key? key,
     required this.firstName,
@@ -49,7 +48,7 @@ class _RegisterPasswordState extends State<RegisterPassword> {
                           'Assets/Lottie json/signup.json'))),
 
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 2,horizontal: 10),
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                 child: HeadLineText(text: "انشاء كلمة سر"),
               ),
               Padding(
@@ -76,18 +75,19 @@ class _RegisterPasswordState extends State<RegisterPassword> {
               ),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: MainButton(
                   buttonTitle: 'انشاء حساب جديد',
                   onPressed: () {
                     setState(() {
                       NavigateToHome(
-                      firstName: widget.firstName,
-                      lastName: widget.lastName,
-                      email: widget.email,
-                      context: context,
-                      password: password.text,
-                      confirmPassword: confirmPassword.text);
+                          firstName: widget.firstName,
+                          lastName: widget.lastName,
+                          email: widget.email,
+                          context: context,
+                          password: password,
+                          confirmPassword: confirmPassword);
                     });
                   },
                 ),
@@ -101,38 +101,44 @@ class _RegisterPasswordState extends State<RegisterPassword> {
 }
 
 void NavigateToHome(
-    {firstName, lastName, email, password, confirmPassword, context}) {
-  
+    {required TextEditingController firstName,
+    required TextEditingController lastName,
+    required TextEditingController email,
+    required TextEditingController password,
+    required TextEditingController confirmPassword,
+    context}) {
   if (passwordValidations()) {
     // when debugging
-  if (kDebugMode) {
-    print(
-        "first name:$firstName\nlast name:$lastName\nemail:$email\npassword: ${password}\nconfirm password: $confirmPassword");
-  }
+    if (kDebugMode) {
+      print(
+          "first name:$firstName\nlast name:$lastName\nemail:$email\npassword: ${password}\nconfirm password: $confirmPassword");
+    }
     passwordValidation.value = false;
     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HoldOnAnimation(
-          animationDirectory: 'Assets/Lottie json/done.json',
-          whenItEnds: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MainView(),
-                ));
-          },
-        ),
-      ));
-      // Adding user to the local model
-  User().addUser(UserAccount(
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: password,
-  ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => HoldOnAnimation(
+            animationDirectory: 'Assets/Lottie json/done.json',
+            whenItEnds: () async {
+              await Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainView(),
+                  ));
+            },
+          ),
+        ));
+    // Adding user to the local model
+    User().addUser(UserAccount(
+      firstName: firstName.text,
+      lastName: lastName.text,
+      email: email.text,
+      password: password.text,
+    ));
+    firstName.clear();
+    lastName.clear();
+    email.clear();
+    password.clear();
+    confirmPassword.clear();
   }
-  
-  
-  
 }

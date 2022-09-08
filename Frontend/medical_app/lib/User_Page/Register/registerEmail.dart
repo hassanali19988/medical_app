@@ -23,17 +23,21 @@ class _RegisterEmailState extends State<RegisterEmail> {
   Widget build(BuildContext context) {
     void navigateToPassword(
         {required BuildContext context,
-        required String firstName,
-        required String lastName,
-        required String email}) {
-      firstNameValidations();
-      lastNameValidations();
-      emailValidations();
+        required TextEditingController firstName,
+        required TextEditingController lastName,
+        required TextEditingController email}) {
+
+
+        firstNameValidations()?firstNameValidation.value = false:null;
+        lastNameValidations()?lastNameValidation.value = false:null;
+        emailValidations()?emailValidation.value = false:null;
+        
       if (firstNameValidations() &&
           lastNameValidations() &&
           emailValidations()) {
         firstNameValidation.value = false;
         lastNameValidation.value = false;
+        
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -137,9 +141,9 @@ class _RegisterEmailState extends State<RegisterEmail> {
                         setState(() {
                           navigateToPassword(
                               context: context,
-                              firstName: firstName.text,
-                              lastName: lastName.text,
-                              email: email.text);
+                              firstName: firstName,
+                              lastName: lastName,
+                              email: email);
                         });
                       },
                       buttonTitle: 'اكمال التسجيل')

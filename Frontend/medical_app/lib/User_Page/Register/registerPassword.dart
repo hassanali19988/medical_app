@@ -60,6 +60,7 @@ class _RegisterPasswordState extends State<RegisterPassword> {
                     RegisterTextField(
                       hintText: 'كلمة السر',
                       controller: password,
+                      isPrivate: true,
                     ),
                     const SizedBox(
                       height: 10,
@@ -69,6 +70,7 @@ class _RegisterPasswordState extends State<RegisterPassword> {
                       controller: confirmPassword,
                       validate: passwordValidation.value,
                       errormsg: passwordErrorMsg,
+                      isPrivate: true,
                     ),
                   ],
                 ),
@@ -106,7 +108,7 @@ void NavigateToHome(
     required TextEditingController email,
     required TextEditingController password,
     required TextEditingController confirmPassword,
-    context}) {
+    context}) async{
   if (passwordValidations()) {
     // when debugging
     if (kDebugMode) {
@@ -119,8 +121,8 @@ void NavigateToHome(
         MaterialPageRoute(
           builder: (context) => HoldOnAnimation(
             animationDirectory: 'Assets/Lottie json/done.json',
-            whenItEnds: () async {
-              await Navigator.pushReplacement(
+            whenItEnds: ()  {
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => MainView(),

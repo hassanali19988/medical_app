@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:medical_app/User_Page/hold_on_animation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Main_View/main_view.dart';
 import '../../models/user_model/account_model.dart';
 import '../../reuseable_widgets/texts_types/headline_text.dart';
 import '../textfield/registerTextField.dart';
@@ -53,7 +55,7 @@ class _LoginState extends State<Login> {
                       hintText: 'كلمة السر',
                       controller: password,
                       validate: passwordValidation.value,
-                      errormsg: passwordErrorMsg),
+                      errormsg: passwordErrorMsg,isPrivate: true,),
                 ],
               ),
             ),
@@ -91,11 +93,8 @@ class _LoginState extends State<Login> {
 
 Future<Null> loginTohome(
     {required email, required password, required context}) async {
-  // print('email:${email.text}\npassword:${password.text}');
   final Rx<bool> userFound = Rx<bool>(false);
-print("${emailValidations()} && ${passwordValidations()}");
   if (emailValidations() && passwordValidations()) {
-    
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('userEmail', email.text);
     prefs.setString('userPassword', password.text);
@@ -106,12 +105,21 @@ print("${emailValidations()} && ${passwordValidations()}");
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => LoggedinAnimation(),
+              builder: (context) => HoldOnAnimation(
+                animationDirectory: 'Assets/Lottie json/login_success.json',
+                whenItEnds: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainView(),
+                    )),
+              ),
             ));
       }
     }
   }
-  if (!userFound.value && emailValidation.value == false && passwordValidation.value == false) {
+  if (!userFound.value &&
+      emailValidation.value == false &&
+      passwordValidation.value == false) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('there is no such user '),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/doctor_page/doctor_page.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,8 +45,8 @@ class _MainViewState extends State<MainView> {
         },
         itemCount: 3,
         itemBuilder: (context, index) {
-          return pages[index];
-          // return Login();
+          // return pages[index];
+          return DoctorPage();
         },
       ),
       bottomNavigationBar: Obx(() {

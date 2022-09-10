@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../reuseable_widgets/break_line.dart';
 import 'doctor_details.dart';
 import 'doctor_location.dart';
 import 'doctor_personal_info_main.dart';
@@ -28,7 +29,10 @@ class DoctorPage extends StatelessWidget {
                   SizedBox(height: 20),
                   DoctorLocation(),
                   DoctorSpeciality(),
-                  DoctorSchedual()
+                  DoctorSchedual(),
+                  SizedBox(height: 20),
+                  Breakline(),
+                  
                 ],
               ),
             ),

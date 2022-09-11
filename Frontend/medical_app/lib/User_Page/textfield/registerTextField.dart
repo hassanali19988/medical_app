@@ -7,6 +7,7 @@ class RegisterTextField extends StatelessWidget {
   final bool validate;
   final String errormsg;
   final bool isPrivate;
+  final String? Function(String?)? validator;
   const RegisterTextField({
     Key? key,
     required this.hintText,
@@ -14,6 +15,7 @@ class RegisterTextField extends StatelessWidget {
     this.validate = false,
     this.errormsg = 'error',
     this.isPrivate = false,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -32,7 +34,7 @@ class RegisterTextField extends StatelessWidget {
         Directionality(
           textDirection: TextDirection.rtl,
           child: SizedBox(
-            child: TextField(
+            child: TextFormField(
               obscureText: isPrivate?true:false,
               enableSuggestions: isPrivate?false:true,
               autocorrect: isPrivate?false:true,
@@ -46,6 +48,7 @@ class RegisterTextField extends StatelessWidget {
                 border: InputBorder.none,
                 errorText: validate ? errormsg : null,
               ),
+              validator: validator,
             ),
           ),
         )

@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:medical_app/User_Page/Register/validations.dart';
 
 import '../../Main_View/main_view.dart';
 import '../../models/user_model/account_model.dart';
@@ -13,7 +12,7 @@ import '../hold_on_animation.dart';
 import '../textfield/registerTextField.dart';
 import 'validationDetatils.dart';
 
-class RegisterPassword extends StatefulWidget {
+class RegisterPassword extends StatelessWidget {
   final TextEditingController firstName, lastName, email;
   const RegisterPassword({
     Key? key,
@@ -24,77 +23,118 @@ class RegisterPassword extends StatefulWidget {
   static final TextEditingController _password = TextEditingController();
   static final TextEditingController _confirmPassword = TextEditingController();
 
-  @override
-  State<RegisterPassword> createState() => _RegisterPasswordState();
-}
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-class _RegisterPasswordState extends State<RegisterPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // return back
-              BackIcon(),
-              // lottie widget
-              Center(
-                  child: SizedBox(
-                      height: 350,
-                      child: LottieBuilder.asset(
-                          'Assets/Lottie json/signup.json'))),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // return back
+                BackIcon(),
+                // lottie widget
+                Center(
+                    child: SizedBox(
+                        height: 350,
+                        child: LottieBuilder.asset(
+                            'Assets/Lottie json/signup.json'))),
 
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                child: HeadLineText(text: "انشاء كلمة سر"),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RegisterTextField(
-                      hintText: 'كلمة السر',
-                      controller: password,
-                      isPrivate: true,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    RegisterTextField(
-                      hintText: 'تأكيد كلمة السر',
-                      controller: confirmPassword,
-                      validate: passwordValidation.value,
-                      errormsg: passwordErrorMsg,
-                      isPrivate: true,
-                    ),
-                  ],
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                  child: HeadLineText(text: "انشاء كلمة سر"),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: MainButton(
-                  buttonTitle: 'انشاء حساب جديد',
-                  onPressed: () {
-                    setState(() {
-                      NavigateToHome(
-                          firstName: widget.firstName,
-                          lastName: widget.lastName,
-                          email: widget.email,
-                          context: context,
-                          password: password,
-                          confirmPassword: confirmPassword);
-                    });
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RegisterTextField(
+                        hintText: 'كلمة السر',
+                        controller: password,
+                        isPrivate: true,
+                        validator: (p0) => null,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RegisterTextField(
+                        hintText: 'تأكيد كلمة السر',
+                        controller: confirmPassword,
+                        // validate: passwordValidation.value,
+                        // errormsg: passwordErrorMsg,
+                        isPrivate: true,
+                        validator: (p0) {
+                          if (password.text.isEmpty ||
+                              confirmPassword.text.isEmpty) {
+                            return "الرجاء ملىءالحقلين";
+                          } else if (password.text != confirmPassword.text) {
+                            return "كلمات السر غير متساوية";
+                          } else if (password.text.length <= 8 ||
+                              confirmPassword.text.length <= 8) {
+                            return "كلمة السر ضعيفة";
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                const SizedBox(height: 10),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: MainButton(
+                    buttonTitle: 'انشاء حساب جديد',
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+                      User().addUser(UserAccount(
+                        firstName: firstName.text,
+                        lastName: lastName.text,
+                        email: email.text,
+                        password: password.text,
+                      ));
+                      firstName.clear();
+                      lastName.clear();
+                      email.clear();
+                      password.clear();
+                      confirmPassword.clear();
+
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HoldOnAnimation(
+                            animationDirectory: 'Assets/Lottie json/done.json',
+                            whenItEnds: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MainView(),
+                                  ));
+                            },
+                          ),
+                        ),
+                      );
+
+                      // NavigateToHome(
+                      //     firstName: firstName,
+                      //     lastName: lastName,
+                      //     email: email,
+                      //     context: context,
+                      //     password: password,
+                      //     confirmPassword: confirmPassword);
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -102,45 +142,3 @@ class _RegisterPasswordState extends State<RegisterPassword> {
   }
 }
 
-void NavigateToHome(
-    {required TextEditingController firstName,
-    required TextEditingController lastName,
-    required TextEditingController email,
-    required TextEditingController password,
-    required TextEditingController confirmPassword,
-    context}) async{
-  if (passwordValidations()) {
-    // when debugging
-    if (kDebugMode) {
-      print(
-          "first name:$firstName\nlast name:$lastName\nemail:$email\npassword: ${password}\nconfirm password: $confirmPassword");
-    }
-    passwordValidation.value = false;
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HoldOnAnimation(
-            animationDirectory: 'Assets/Lottie json/done.json',
-            whenItEnds: ()  {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainView(),
-                  ));
-            },
-          ),
-        ));
-    // Adding user to the local model
-    User().addUser(UserAccount(
-      firstName: firstName.text,
-      lastName: lastName.text,
-      email: email.text,
-      password: password.text,
-    ));
-    firstName.clear();
-    lastName.clear();
-    email.clear();
-    password.clear();
-    confirmPassword.clear();
-  }
-}

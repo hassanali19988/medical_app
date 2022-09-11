@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/Appointments/appointment_card.dart';
+import 'package:medical_app/doctor_page/doctor_page.dart';
 import 'package:medical_app/reuseable_widgets/texts_types/headline_text.dart';
 import 'package:medical_app/reuseable_widgets/texts_types/sub_text.dart';
 
@@ -49,7 +50,9 @@ class _ScheduleTabState extends State<ScheduleTab>
                     shrinkWrap: true,
                     itemCount: 4,
                     itemBuilder: (context, index) {
-                      return AppointmentCard();
+                      return GestureDetector(onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DoctorPage(),));
+                      },child: AppointmentCard());
                     },
                   ),
                   Text("second")

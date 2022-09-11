@@ -20,7 +20,16 @@ class DoctorPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(icon: Icon(Icons.arrow_forward_ios),onPressed: () {
+                        Navigator.pop(context);
+                      },),
+                    ),
+                  ),
                   DoctorPersonalInfoMain(),
                   SizedBox(height: 35),
                   DoctorDetails(
@@ -32,7 +41,6 @@ class DoctorPage extends StatelessWidget {
                   DoctorSchedual(),
                   SizedBox(height: 20),
                   Breakline(),
-                  
                 ],
               ),
             ),

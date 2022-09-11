@@ -7,20 +7,12 @@ import '../../Main_View/main_view.dart';
 import '../../models/user_model/account_model.dart';
 import '../../reuseable_widgets/texts_types/headline_text.dart';
 import '../textfield/registerTextField.dart';
-import 'loggedin_animation.dart';
 
 import 'loginValidationDetails.dart';
-import 'loginValidations.dart';
 import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
-
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
+class Login extends StatelessWidget {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,98 +24,116 @@ class _LoginState extends State<Login> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            LottieBuilder.asset(
-              'Assets/Lottie json/login_screen_animation.json',
-              repeat: false,
-            ),
-            // SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  RegisterTextField(
-                      hintText: 'البريد الالكتروني',
-                      controller: email,
-                      validate: emailValidation.value,
-                      errormsg: emailErrorMsg),
-                  const SizedBox(height: 10),
-                  RegisterTextField(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              LottieBuilder.asset(
+                'Assets/Lottie json/login_screen_animation.json',
+                repeat: false,
+              ),
+              // SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    RegisterTextField(
+                        hintText: 'البريد الالكتروني',
+                        controller: email,
+                        // validate: emailValidation.value,
+                        // errormsg: emailErrorMsg,
+                        validator: (p0) {
+                          if (p0 != null) {
+                            bool emailValidator = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(p0);
+                            return emailValidator == false
+                                ? "الايميل غير صحيح"
+                                : null;
+                          }
+                        }),
+                    const SizedBox(height: 10),
+                    RegisterTextField(
                       hintText: 'كلمة السر',
                       controller: password,
-                      validate: passwordValidation.value,
-                      errormsg: passwordErrorMsg,isPrivate: true,),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                width: double.maxFinite,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.blue),
-                child: TextButton(
-                  onPressed: () {
-                    setState(() {
-                      loginTohome(
-                          context: context, email: email, password: password);
-                    });
-                  },
-                  child: const HeadLineText(
-                    text: 'تسجيل الدخول',
-                    lineHeight: 1,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+                      // validate: passwordValidation.value,
+                      // errormsg: passwordErrorMsg,
+                      isPrivate: true,
+                      validator: (p0) {
+                        if (p0 != null) {
+                          if (p0.isEmpty) {
+                            return "الرجاء كتابة الرمز السري";
+                          }
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  width: double.maxFinite,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.blue),
+                  child: TextButton(
+                    onPressed: () async {
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+                      final Rx<bool> userFound = Rx<bool>(false);
+                      for (UserAccount user in User.users) {
+                        if (email.text == user.email &&
+                            password.text == user.password) {
+                          final prefs = await SharedPreferences.getInstance();
+                          prefs.setString('userEmail', email.text);
+                          prefs.setString('userPassword', password.text);
+                          userFound.value = true;
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HoldOnAnimation(
+                                  animationDirectory:
+                                      'Assets/Lottie json/login_success.json',
+                                  whenItEnds: () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MainView(),
+                                      )),
+                                ),
+                              ));
+                        }
+                      }
+                      if (userFound.value == false) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('there is no such user '),
+                          ),
+                        );
+                      }
+                      // loginTohome(
+                      //     context: context, email: email, password: password);
+                    },
+                    child: const HeadLineText(
+                      text: 'تسجيل الدخول',
+                      lineHeight: 1,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-Future<Null> loginTohome(
-    {required email, required password, required context}) async {
-  final Rx<bool> userFound = Rx<bool>(false);
-  if (emailValidations() && passwordValidations()) {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('userEmail', email.text);
-    prefs.setString('userPassword', password.text);
-    for (UserAccount user in User.users) {
-      if (email.text == user.email && password.text == user.password) {
-        userFound.value = true;
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HoldOnAnimation(
-                animationDirectory: 'Assets/Lottie json/login_success.json',
-                whenItEnds: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MainView(),
-                    )),
-              ),
-            ));
-      }
-    }
-  }
-  if (!userFound.value &&
-      emailValidation.value == false &&
-      passwordValidation.value == false) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('there is no such user '),
-      ),
-    );
-  }
-}

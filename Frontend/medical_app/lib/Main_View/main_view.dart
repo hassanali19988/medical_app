@@ -4,7 +4,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Appointments/appointments_main.dart';
+import '../Appointments/ScheduleTab.dart';
 import '../Home/home_main.dart';
 import '../User_Page/Login/login_main.dart';
 import '../User_Page/Register/registerEmail.dart';
@@ -17,7 +17,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-   final List pages = [Home(),Appointments()];
+   final List pages = [Home(),ScheduleTab()];
   Future<Null> getUserData() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.getString('userEmail')==null?pages.insert(2, RegisterEmail()):pages.insert(2, UserPage());
@@ -45,8 +45,8 @@ class _MainViewState extends State<MainView> {
         },
         itemCount: 3,
         itemBuilder: (context, index) {
-          // return pages[index];
-          return DoctorPage();
+          return pages[index];
+          // return DoctorPage();
         },
       ),
       bottomNavigationBar: Obx(() {

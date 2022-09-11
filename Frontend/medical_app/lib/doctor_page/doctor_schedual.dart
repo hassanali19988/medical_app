@@ -18,7 +18,7 @@ class _DoctorSchedualState extends State<DoctorSchedual> {
       children: [
         const HeadLineText(text: 'جدول المواعيد',size: 24,color: Colors.black,),
         DatePicker(
-          daysCount: 4,
+          daysCount: 30,
         width:80,
         height:110,
         DateTime.now(),

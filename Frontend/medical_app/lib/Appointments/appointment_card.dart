@@ -1,128 +1,154 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/reuseable_widgets/texts_types/headline_text.dart';
-import 'package:medical_app/reuseable_widgets/texts_types/sub_text.dart';
+
+import '../reuseable_widgets/texts_types/headline_text.dart';
 
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Stack(
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+                blurRadius: 40,
+                color: Color.fromARGB(40, 0, 0, 0),
+                offset: Offset(0, 8))
+          ],
+          borderRadius: BorderRadius.circular(10)),
+      width: 100,
+      height: 280,
+      margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "110 IQD",
-                  style: GoogleFonts.vazirmatn(fontSize: 20),
-                ),
+              const CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage('Assets/images/doctor03.jpeg'),
               ),
-            ),
-            Column(
-              children: [SizedBox(
-              // color: Colors.red,
-              height: 90,
-              child: Row(
+              const SizedBox(width: 10),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg'),
-                    radius: 35,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  HeadLineText(
+                    text: 'د.محمد علي موسى',
+                    color: Colors.black,
+                    lineHeight: 1,
+                    size: 22,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        HeadLineText(
-                          text: "د.محمد عبد الامير",
-                          size: 21,
-                          lineHeight: 1,
-                          color: Colors.black,
-                        ),
-                        SubText(
-                          text: "اختصاص باطنية",
-                          color: Colors.blue,
-                          size: 16,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  HeadLineText(
+                    text: 'اختصاص باطنية',
+                    color: Color(0xffc4c4c4),
+                    lineHeight: 1,
+                    size: 15,
+                  ),
+                ],
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              width: double.maxFinite,
+              height: 70,
+              decoration: BoxDecoration(
+                  color: const Color(0xffF9F8FD),
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.date_range_rounded),
+                        Text(
+                          'الاثنين, 29 شباط',
+                          style: GoogleFonts.vazirmatn(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              height: 2),
                         )
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                    Text(
-                      '5.0',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      "|",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-                    ),
-                    Text('9',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500)),
-                    SizedBox(width: 4),
-                    Text(
-                      'سنوات خبرة',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      "|",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-                    ),
-                    Text('103',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500)),
-                    SizedBox(width: 4),
-                    Text(
-                      'مريض',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Row(
+                        children: [
+                          Text('10:00 AM - 11:00 AM',
+                              style: GoogleFonts.vazirmatn(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  height: 2)),
+                          const Icon(Icons.watch_later_outlined),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                const Text(
-                  '2023-12-3 الثلاثاء | 10:00AM - 12:00PM',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 45,
+                  child: ElevatedButton(
+                      onPressed: () => null,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.white,
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32),
+                              side: const BorderSide(color: Color(0xffc4c4c4))),
+                        ),
+                      ),
+                      child: Text(
+                        "الغاء الحجز",
+                        style: GoogleFonts.vazirmatn(
+                            fontSize: 18, color: const Color(0xffc4c4c4)),
+                      )),
                 ),
-              ],
-            )],
-            )
-          ]),
-        ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Container(
+                  height: 45,
+                  child: ElevatedButton(
+                      onPressed: () => null,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xff47CEFF)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        "معلومات الحجز",
+                        style: GoogleFonts.vazirmatn(fontSize: 18),
+                      )),
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }

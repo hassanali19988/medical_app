@@ -21,7 +21,7 @@ class GenderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // width: 220,
-      height: 125,
+      height: 135,
       padding: const EdgeInsets.all(15),
       decoration:
           BoxDecoration(color: color, borderRadius: BorderRadius.circular(18)),

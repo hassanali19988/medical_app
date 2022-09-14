@@ -1,12 +1,14 @@
+
+
+
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 import '../models/onboarding_models/onboarding_details.dart';
 import '../reuseable_widgets/texts_types/headline_text.dart';
 import '../reuseable_widgets/texts_types/sub_text.dart';
 
 class OnBoardingMain extends StatefulWidget {
-  OnBoardingMain({Key? key}) : super(key: key);
+ const OnBoardingMain({Key? key}) : super(key: key);
 
   @override
   State<OnBoardingMain> createState() => _OnBoardingMainState();

@@ -8,7 +8,9 @@ import '../Appointments/ScheduleTab.dart';
 import '../Home/home_main.dart';
 import '../User_Page/Login/login_main.dart';
 import '../User_Page/Register/registerEmail.dart';
+import '../User_Page/health_info_register_page/health_info_main.dart';
 import '../User_Page/loged_user_page/user_page.dart';
+import 'bottom_navigation_bar.dart';
 
 class MainView extends StatefulWidget {
 
@@ -45,54 +47,11 @@ class _MainViewState extends State<MainView> {
         },
         itemCount: 3,
         itemBuilder: (context, index) {
-          return pages[index];
-          // return DoctorPage();
+          // return pages[index];
+          return HealthInfoRegister();
         },
       ),
-      bottomNavigationBar: Obx(() {
-        return SalomonBottomBar(
-          itemPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
-          currentIndex: currentIndex.value,
-          onTap: (i) {
-            currentIndex.value = i;
-            pageController.jumpToPage(i);
-          },
-          items: [
-            /// Home
-            SalomonBottomBarItem(
-              icon: const Icon(
-                Icons.home,
-                size: 35,
-              ),
-              title: const Text("الرئيسية",style: TextStyle(fontSize: 16,)),
-              selectedColor: Color(0xff2196F3),
-            ),
-
-            /// Likes
-            SalomonBottomBarItem(
-              icon: const Icon(
-                Icons.calendar_today_rounded,
-                size: 35,
-              ),
-              title: const Text("المواعيد",style: TextStyle(fontSize: 16,)),
-              selectedColor: Color(0xff2196F3),
-            ),
-
-            /// Search
-            SalomonBottomBarItem(
-              
-              icon: const Icon(
-                Icons.person_outline,
-                size: 35,
-              ),
-              title: const Text("الحساب",style: TextStyle(fontSize: 16,)),
-              selectedColor: Color(0xff2196F3),
-            ),
-
-            /// Profile
-          ],
-        );
-      }),
+      bottomNavigationBar: BottomSalamonNavigationBar(currentIndex: currentIndex,pageController: pageController,),
     );
   }
 }

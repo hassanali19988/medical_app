@@ -14,8 +14,6 @@ class RegisterEmail extends StatelessWidget {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    
-
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -92,18 +90,7 @@ class RegisterEmail extends StatelessWidget {
                     RegisterTextField(
                       hintText: 'الحساب الالكتروني',
                       controller: email,
-                      validator: (p0) {
-                        if (p0 != null) {
-                          bool emailValidator = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(p0);
-                          return emailValidator == false
-                              ? "الايميل غير صحيح"
-                              : null;
-                        }
-                      },
-                      // validate: emailValidation.value,
-                      // errormsg: emailErrorMsg,
+                      validator: (p0) => emailValidation(p0),
                     ),
                     const SizedBox(
                       height: 10,
@@ -126,7 +113,7 @@ class RegisterEmail extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>  Login(),
+                                        builder: (context) => Login(),
                                       ),
                                     );
                                   }),
@@ -138,7 +125,7 @@ class RegisterEmail extends StatelessWidget {
                         if (!_formKey.currentState!.validate()) {
                           return;
                         }
-                        
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(

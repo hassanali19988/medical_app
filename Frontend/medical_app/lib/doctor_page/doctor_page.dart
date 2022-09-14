@@ -25,22 +25,22 @@ class DoctorPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: IconButton(icon: Icon(Icons.arrow_forward_ios),onPressed: () {
+                      child: IconButton(icon: const Icon(Icons.arrow_forward_ios),onPressed: () {
                         Navigator.pop(context);
                       },),
                     ),
                   ),
-                  DoctorPersonalInfoMain(),
-                  SizedBox(height: 35),
-                  DoctorDetails(
+                  const DoctorPersonalInfoMain(),
+                  const SizedBox(height: 35),
+                  const DoctorDetails(
                       text:
                           'طبيب اختصاص في علم الامراض بالإضافة الى عدة شهادات دولية في علم النفس (الشفاء الداخلي) '),
-                  SizedBox(height: 20),
-                  DoctorLocation(),
-                  DoctorSpeciality(),
-                  DoctorSchedual(),
-                  SizedBox(height: 20),
-                  Breakline(),
+                  const SizedBox(height: 20),
+                  const DoctorLocation(),
+                  const DoctorSpeciality(),
+                  const DoctorSchedual(),
+                  const SizedBox(height: 20),
+                  
                 ],
               ),
             ),

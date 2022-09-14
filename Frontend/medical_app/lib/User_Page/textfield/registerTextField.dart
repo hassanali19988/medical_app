@@ -7,6 +7,7 @@ class RegisterTextField extends StatelessWidget {
   final bool validate;
   final String errormsg;
   final bool isPrivate;
+  final bool description;
   final String? Function(String?)? validator;
   const RegisterTextField({
     Key? key,
@@ -15,7 +16,7 @@ class RegisterTextField extends StatelessWidget {
     this.validate = false,
     this.errormsg = 'error',
     this.isPrivate = false,
-    required this.validator,
+    required this.validator,  this.description = false,
   }) : super(key: key);
 
   @override
@@ -23,7 +24,7 @@ class RegisterTextField extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 64,
+          height: description?64 + (5 *24):64,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Color(0xfffdfdfd),
@@ -33,23 +34,24 @@ class RegisterTextField extends StatelessWidget {
         ),
         Directionality(
           textDirection: TextDirection.rtl,
-          child: SizedBox(
-            child: TextFormField(
-              obscureText: isPrivate?true:false,
-              enableSuggestions: isPrivate?false:true,
-              autocorrect: isPrivate?false:true,
-              controller: controller,
-              decoration: InputDecoration(
-                hintStyle: GoogleFonts.vazirmatn(
-                    fontSize: 22, color: Color(0xffC4C4C4)),
-                hintText: hintText,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-                border: InputBorder.none,
-                errorText: validate ? errormsg : null,
-              ),
-              validator: validator,
+          child: TextFormField(
+            maxLines: description?5:1,
+            maxLength: null,
+            
+            obscureText: isPrivate?true:false,
+            enableSuggestions: isPrivate?false:true,
+            autocorrect: isPrivate?false:true,
+            controller: controller,
+            decoration: InputDecoration(
+              hintStyle: GoogleFonts.vazirmatn(
+                  fontSize: 22, color: Color(0xffC4C4C4)),
+              hintText: hintText,
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+              border: InputBorder.none,
+              errorText: validate ? errormsg : null,
             ),
+            validator: validator,
           ),
         )
       ],

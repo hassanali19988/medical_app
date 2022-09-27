@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Home/home_main.dart';
 import 'Main_View/main_view.dart';
 import 'OnBoarding/onboarding_main.dart';
+import 'medicine/Drugs_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       initialRoute: showHome ?'/main':'/',
       routes: {
         '/': (context) => OnBoardingMain(),
-        '/main': (context) => MainView()
+        '/main': (context) => DrugsScreen()
       },
     );
   }
